@@ -28,6 +28,33 @@ app.use(
   })
 );
 
+// ROUTE 3: Unified User Service (Auth & Profiles)
+app.use(
+  "/api/user",
+  createProxyMiddleware({
+    target: "http://localhost:4003", 
+    changeOrigin: true,
+  })
+);
+
+// ROUTE 4: Cart Service
+app.use(
+  "/api/cart",
+  createProxyMiddleware({
+    target: "http://localhost:4005", 
+    changeOrigin: true,
+  })
+);
+
+// ROUTE 5: Order Service
+app.use(
+  "/api/order",
+  createProxyMiddleware({
+    target: "http://localhost:4006", 
+    changeOrigin: true,
+  })
+);
+
 // ROUTE 3: Everything else goes to the dying Monolith
 app.use(
   "/api",

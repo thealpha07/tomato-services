@@ -36,9 +36,9 @@ connectDB().then(async () => {
 // api endpoints
 //app.use("/api/food", foodRouter); -- moved it to food-service
 //app.use("/images", express.static("uploads"));
-app.use("/user", userRouter);
-app.use("/cart", cartRouter);
-app.use("/order", orderRouter);
+//app.use("/user", userRouter);
+//app.use("/cart", cartRouter);
+//app.use("/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");

@@ -9,8 +9,7 @@ The three folders are broken into below services,
 tomato/ 
 	├── api-gateway/  	#port:4000
 	├── food-service/ 	#port:4001
-	├── auth-service/	#port:4003
-	├── user-service/	#port:4004
+	├── user-service/	#port:4003
 	├── cart-service/	#port:4005
 	├── order-service/	#port:4006
 	├── frontend/	  	#port:4002
@@ -41,3 +40,5 @@ food-service/
 ├── server.js
 ├── package.json
 ```
+
+Unified initially planned Auth and User Service into one. Similarly unified the Orders and Payment Services.
