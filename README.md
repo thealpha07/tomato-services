@@ -7,15 +7,14 @@ The monolith is broken into multiple services and linked together. Why? Basicall
 The three folders are broken into below services,
 ```
 tomato/ 
-	├── api-gateway/ 
-	├── food-service/
-	├── auth-service/
-	├── user-service/
-	├── cart-service/
-	├── order-service/
-	├── payment-service/
-	├── frontend/
-	├── admin/
+	├── api-gateway/  	#port:4000
+	├── food-service/ 	#port:4001
+	├── auth-service/	#port:4003
+	├── user-service/	#port:4004
+	├── cart-service/	#port:4005
+	├── order-service/	#port:4006
+	├── frontend/	  	#port:4002
+	├── admin/			#port:4007
 
 ```
 Ignoring other non-tech files.
