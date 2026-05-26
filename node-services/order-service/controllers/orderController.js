@@ -7,8 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // placing user order from frontend
 const placeOrder = async (req, res) => {
-// ... omitting unchanged code but wait, replace requires full chunk
-  const frontend_url = process.env.FRONTEND_URL;
+  const frontend_url = process.env.FRONTEND_URL || req.headers.origin || "http://localhost:5173";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
