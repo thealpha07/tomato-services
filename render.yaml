@@ -7,6 +7,7 @@ services:
   - type: web
     name: food-service
     env: docker
+    plan: free
     rootDir: ./node-services/food-service
     envVars:
       - key: MONGO_URL_FOOD
@@ -17,6 +18,7 @@ services:
   - type: web
     name: user-service
     env: docker
+    plan: free
     rootDir: ./node-services/user-service
     envVars:
       - key: MONGO_URL_USER
@@ -29,6 +31,7 @@ services:
   - type: web
     name: cart-service
     env: docker
+    plan: free
     rootDir: ./node-services/cart-service
     envVars:
       - key: MONGO_URL_CART
@@ -39,6 +42,7 @@ services:
   - type: web
     name: order-service
     env: docker
+    plan: free
     rootDir: ./node-services/order-service
     envVars:
       - key: MONGO_URL_ORDER
@@ -54,6 +58,7 @@ services:
   - type: web
     name: api-gateway
     env: docker
+    plan: free
     rootDir: ./node-services/api-gateway
     envVars:
       - key: FOOD_SERVICE_URL
