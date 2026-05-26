@@ -1,0 +1,110 @@
+version: "1"
+
+services:
+  # ----------------------------------------
+  # 1. Backend Microservices
+  # ----------------------------------------
+  - type: web
+    name: food-service
+    env: docker
+    rootDir: ./node-services/food-service
+    envVars:
+      - key: MONGO_URL_FOOD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: user-service
+    env: docker
+    rootDir: ./node-services/user-service
+    envVars:
+      - key: MONGO_URL_USER
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: SALT
+        value: "10"
+
+  - type: web
+    name: cart-service
+    env: docker
+    rootDir: ./node-services/cart-service
+    envVars:
+      - key: MONGO_URL_CART
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: order-service
+    env: docker
+    rootDir: ./node-services/order-service
+    envVars:
+      - key: MONGO_URL_ORDER
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+
+  # ----------------------------------------
+  # 2. API Gateway
+  # ----------------------------------------
+  - type: web
+    name: api-gateway
+    env: docker
+    rootDir: ./node-services/api-gateway
+    envVars:
+      - key: FOOD_SERVICE_URL
+        fromService:
+          type: web
+          name: food-service
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: USER_SERVICE_URL
+        fromService:
+          type: web
+          name: user-service
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: CART_SERVICE_URL
+        fromService:
+          type: web
+          name: cart-service
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: ORDER_SERVICE_URL
+        fromService:
+          type: web
+          name: order-service
+          envVarKey: RENDER_EXTERNAL_URL
+      # For production, replace "*" with your actual frontend URLs (comma separated)
+      - key: ALLOWED_ORIGINS
+        value: "*"
+
+  # ----------------------------------------
+  # 3. Frontends (Static Sites - Free Tier)
+  # ----------------------------------------
+  - type: web
+    name: tomato-frontend
+    env: static
+    rootDir: ./nginx-services/frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromService:
+          type: web
+          name: api-gateway
+          envVarKey: RENDER_EXTERNAL_URL
+
+  - type: web
+    name: tomato-admin
+    env: static
+    rootDir: ./nginx-services/admin
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromService:
+          type: web
+          name: api-gateway
+          envVarKey: RENDER_EXTERNAL_URL
