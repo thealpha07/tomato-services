@@ -10,7 +10,7 @@ services:
     plan: free
     rootDir: ./node-services/food-service
     envVars:
-      - key: MONGO_URL_FOOD
+      - key: MONGO_URL
         sync: false
       - key: JWT_SECRET
         sync: false
@@ -21,7 +21,7 @@ services:
     plan: free
     rootDir: ./node-services/user-service
     envVars:
-      - key: MONGO_URL_USER
+      - key: MONGO_URL
         sync: false
       - key: JWT_SECRET
         sync: false
@@ -34,7 +34,7 @@ services:
     plan: free
     rootDir: ./node-services/cart-service
     envVars:
-      - key: MONGO_URL_CART
+      - key: MONGO_URL
         sync: false
       - key: JWT_SECRET
         sync: false
@@ -45,7 +45,7 @@ services:
     plan: free
     rootDir: ./node-services/order-service
     envVars:
-      - key: MONGO_URL_ORDER
+      - key: MONGO_URL
         sync: false
       - key: JWT_SECRET
         sync: false
