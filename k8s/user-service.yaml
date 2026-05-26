@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: localhost:5000/user-service:latest
+        command: ["/bin/sh", "-c", "rm -f .env && node server.js"]
+        ports:
+        - containerPort: 4003
+        env:
+        - name: PORT
+          value: "4003"
+        - name: SALT
+          value: "10"
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: MONGO_URL_USER
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 4003
+      targetPort: 4003

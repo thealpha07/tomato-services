@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-service
+  labels:
+    app: cart-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart-service
+  template:
+    metadata:
+      labels:
+        app: cart-service
+    spec:
+      containers:
+      - name: cart-service
+        image: localhost:5000/cart-service:latest
+        command: ["/bin/sh", "-c", "rm -f .env && node server.js"]
+        ports:
+        - containerPort: 4005
+        env:
+        - name: PORT
+          value: "4005"
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: MONGO_URL_CART
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service
+spec:
+  selector:
+    app: cart-service
+  ports:
+    - protocol: TCP
+      port: 4005
+      targetPort: 4005

@@ -1,0 +1,138 @@
+.footer-container {
+  width: 100%;
+  margin-top: 100px;
+}
+
+.footer-green-wave {
+  background-color: var(--primary-green);
+  color: white;
+  padding: 80px 5%;
+  position: relative;
+  /* Top ripped paper edge */
+  clip-path: polygon(
+    0% 5%, 5% 0%, 10% 4%, 15% 1%, 20% 5%, 25% 0%, 30% 6%, 35% 2%, 40% 5%, 45% 0%, 
+    50% 4%, 55% 1%, 60% 6%, 65% 2%, 70% 5%, 75% 0%, 80% 6%, 85% 1%, 90% 4%, 95% 0%, 100% 5%,
+    100% 100%, 0% 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.footer-promo {
+  text-align: center;
+  z-index: 10;
+}
+
+.footer-promo h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.footer-promo strong {
+  font-size: clamp(3rem, 5vw, 4rem);
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+}
+
+.footer-order-btn {
+  background: var(--bg-dark);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.footer-order-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* Floating Brand Logos */
+.brand-logo {
+  position: absolute;
+  width: 60px; height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 1.8rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  animation: float 4s ease-in-out infinite;
+}
+
+.logo-1 { top: 20%; left: 15%; animation-delay: 0s; }
+.logo-2 { top: 40%; left: 25%; animation-delay: 1s; }
+.logo-3 { bottom: 20%; left: 10%; animation-delay: 2s; }
+.logo-4 { top: 25%; right: 20%; animation-delay: 0.5s; }
+.logo-5 { top: 50%; right: 10%; animation-delay: 1.5s; }
+.logo-6 { bottom: 30%; right: 25%; animation-delay: 2.5s; }
+
+/* Dark Bottom Strip */
+.footer-bottom {
+  background-color: var(--bg-dark);
+  color: white;
+  padding: 40px 5%;
+}
+
+.footer-bottom-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.footer-bottom-text {
+  flex: 1;
+  text-align: left;
+}
+
+.footer-bottom h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary-orange);
+  margin-bottom: 15px;
+}
+
+.copyright-text {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 800px;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-social-icons img {
+  width: 24px;
+  cursor: pointer;
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 900px) {
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  .brand-logo {
+    display: none; /* Hide floating logos on mobile to save space */
+  }
+}
+
+.footer-copyright {
+  text-align: center;
+}

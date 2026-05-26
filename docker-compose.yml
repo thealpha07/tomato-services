@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: ./node-services/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - FOOD_SERVICE_URL=http://food-service:4001
+      - USER_SERVICE_URL=http://user-service:4003
+      - CART_SERVICE_URL=http://cart-service:4005
+      - ORDER_SERVICE_URL=http://order-service:4006
+      - ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,http://localhost:3000,http://localhost:3001
+    depends_on:
+      - food-service
+      - user-service
+      - cart-service
+      - order-service
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  food-service:
+    build:
+      context: ./node-services/food-service
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - MONGO_URL=${MONGO_URL_FOOD:-mongodb+srv://username:password@cluster.mongodb.net/food-db}
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+    volumes:
+      - food-uploads:/app/uploads
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  user-service:
+    build:
+      context: ./node-services/user-service
+      dockerfile: Dockerfile
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - MONGO_URL=${MONGO_URL_USER:-mongodb+srv://username:password@cluster.mongodb.net/user-db}
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+      - SALT=${SALT:-10}
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  cart-service:
+    build:
+      context: ./node-services/cart-service
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+    environment:
+      - PORT=4005
+      - MONGO_URL=${MONGO_URL_CART:-mongodb+srv://username:password@cluster.mongodb.net/cart-db}
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  order-service:
+    build:
+      context: ./node-services/order-service
+      dockerfile: Dockerfile
+    ports:
+      - "4006:4006"
+    environment:
+      - PORT=4006
+      - MONGO_URL=${MONGO_URL_ORDER:-mongodb+srv://username:password@cluster.mongodb.net/order-db}
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_your_stripe_key}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./nginx-services/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URL: http://localhost:4000
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ./nginx-services/admin
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URL: http://localhost:4000
+    ports:
+      - "3001:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - tomato-network
+    restart: unless-stopped
+
+volumes:
+  food-uploads:
+
+networks:
+  tomato-network:
+    driver: bridge

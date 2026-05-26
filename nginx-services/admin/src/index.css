@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+:root {
+  --primary-orange: #fb5d35;
+  --primary-yellow: #f6c449;
+  --primary-green: #3bb369;
+  --bg-dark: #222228;
+  --bg-light: #fefdf9;
+  --dashboard-bg: #f4f6fa;
+  --text-dark: #202020;
+  --text-gray: #6b6b6b;
+  --text-light: #ffffff;
+  
+  --shadow-sm: 0 4px 14px rgba(0,0,0,0.05);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 40px rgba(251, 93, 53, 0.15);
+  
+  --radius-full: 9999px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+body{
+    min-height: 100vh;
+    background-color: var(--dashboard-bg);
+    color: var(--text-dark);
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+hr{
+    border: none;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-app {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.main-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 260px);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 30px 40px;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.cursor{
+    cursor: pointer;
+}

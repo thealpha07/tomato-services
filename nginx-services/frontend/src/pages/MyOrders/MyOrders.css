@@ -1,0 +1,168 @@
+.my-orders{
+    margin: 50px 0px;
+}
+.my-orders .container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+.my-orders-order{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
+    align-items: center;
+    gap: 30px;
+    font-size: 14px;
+    padding: 10px 20px;
+    color: #454545;
+    border: 1px solid tomato;
+}
+.my-orders-order img{
+    width: 50px;
+}
+.my-orders-order p span{
+    color: tomato;
+}
+.my-orders-order p b{
+    font-weight: 500;
+    color: #454545;
+}
+.my-orders-order button{
+    border: none;
+    padding: 12px 0px;
+    border-radius: 4px;
+    background-color: #ffe1e1;
+    cursor: pointer;
+    color: #454545;
+}
+@media (max-width:900px) {
+    .my-orders-order{
+        grid-template-columns: 1fr 2fr 1fr;
+        row-gap: 5px;
+        font-size: 12px;
+    }
+    .my-orders-order button{
+        font-size: 10px;
+    }
+}
+
+/* Track Order Modal Styles */
+.track-order-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.track-order-modal-content {
+    background: white;
+    width: 450px;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.track-order-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.track-order-modal-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.close-icon {
+    width: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.close-icon:hover {
+    transform: scale(1.1);
+}
+
+.track-order-map-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dummy-map-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.eta-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    color: tomato;
+}
+
+.eta-badge p {
+    margin: 0;
+}
+
+.track-order-status-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.status-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+}
+
+.status-step.active {
+    opacity: 1;
+}
+
+.status-step .dot {
+    color: tomato;
+    font-size: 20px;
+}
+
+.status-step p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.track-order-footer {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.track-order-footer p {
+    margin: 0;
+    font-size: 14px;
+}

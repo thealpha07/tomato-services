@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+:root {
+  --primary-orange: #fb5d35;
+  --primary-yellow: #f6c449;
+  --primary-green: #3bb369;
+  --bg-dark: #222228;
+  --bg-light: #fefdf9;
+  --text-dark: #202020;
+  --text-gray: #6b6b6b;
+  --text-light: #ffffff;
+  
+  --shadow-sm: 0 4px 14px rgba(0,0,0,0.05);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 40px rgba(251, 93, 53, 0.15);
+  
+  --radius-full: 9999px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body{
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+.app{
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+}
+
+/* Base Utility Classes */
+.text-orange { color: var(--primary-orange); }
+.text-green { color: var(--primary-green); }
+.text-yellow { color: var(--primary-yellow); }
+
+@keyframes fadeIn{
+  0%{ opacity: 0; transform: translateY(10px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}

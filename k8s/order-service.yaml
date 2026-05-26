@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - name: order-service
+        image: localhost:5000/order-service:latest
+        command: ["/bin/sh", "-c", "rm -f .env && node server.js"]
+        ports:
+        - containerPort: 4006
+        env:
+        - name: PORT
+          value: "4006"
+        - name: FRONTEND_URL
+          value: "http://localhost:3000"
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: MONGO_URL_ORDER
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: JWT_SECRET
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tomato-secrets
+              key: STRIPE_SECRET_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order-service
+  ports:
+    - protocol: TCP
+      port: 4006
+      targetPort: 4006
