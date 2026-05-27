@@ -13,12 +13,13 @@ const Verify = () => {
     const navigate= useNavigate();
 
     const verifyPayment=async()=>{
-        const response= await axios.post(url+"/api/order/verify",{success,orderId});
+        const token = localStorage.getItem("token");
+        const response= await axios.post(url+"/api/order/verify",{success,orderId},{headers:{token}});
         if(response.data.success){
             navigate("/myorders");
             toast.success("Order Placed Successfully");
         }else{
-            toast.error("Something went wrong");
+            toast.error(response.data.message || "Something went wrong");
             navigate("/");
         }
     }
