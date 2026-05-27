@@ -71,12 +71,7 @@ const getCart = async (req, res) => {
 // clear user cart
 const clearCart = async (req, res) => {
   try {
-    let userCart = await cartModel.findOne({ userId: req.body.userId });
-    if (userCart) {
-      userCart.cartData = {};
-      userCart.markModified('cartData');
-      await userCart.save();
-    }
+    await cartModel.findOneAndUpdate({ userId: req.body.userId }, { cartData: {} });
     res.json({ success: true, message: "Cart Cleared" });
   } catch (error) {
     console.error(error);
