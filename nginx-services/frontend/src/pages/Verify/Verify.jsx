@@ -9,13 +9,19 @@ const Verify = () => {
     const [searchParams,setSearchParams]=useSearchParams();
     const success=searchParams.get("success");
     const orderId=searchParams.get("orderId");
-    const {url} =useContext(StoreContext);
+    const {url, setCartItems} =useContext(StoreContext);
     const navigate= useNavigate();
 
     const verifyPayment=async()=>{
         const token = localStorage.getItem("token");
         const response= await axios.post(url+"/api/order/verify",{success,orderId},{headers:{token}});
         if(response.data.success){
+            setCartItems({});
+            try {
+                await axios.post(url+"/api/cart/clear",{},{headers:{token}});
+            } catch (error) {
+                console.error("Failed to clear cart:", error);
+            }
             navigate("/myorders");
             toast.success("Order Placed Successfully");
         }else{

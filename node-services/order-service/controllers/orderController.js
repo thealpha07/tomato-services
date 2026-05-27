@@ -60,16 +60,7 @@ const verifyOrder = async (req, res) => {
     if (success == "true") {
       const order = await orderModel.findByIdAndUpdate(orderId, { payment: true }, { new: true });
       
-      // MICROSERVICE COMMUNICATION: Publish event to Redis Pub/Sub
-      try {
-        await redisPublisher.publish(
-          'order-events',
-          JSON.stringify({ event: 'OrderPaid', userId: order.userId, orderId: order._id })
-        );
-        console.log(`Published OrderPaid event for user ${order.userId}`);
-      } catch (redisError) {
-        console.error('Failed to publish OrderPaid event to Redis:', redisError);
-      }
+      // Redis removed - Frontend will handle cart clearing via API Gateway
       
       res.json({ success: true, message: "Paid" });
     } else {
