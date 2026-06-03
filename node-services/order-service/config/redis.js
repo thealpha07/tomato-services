@@ -1,16 +1,41 @@
 import { createClient } from 'redis';
 
-export const redisPublisher = createClient({
-  url: process.env.REDIS_URL || 'redis://redis:6379'
-});
-
-redisPublisher.on('error', (err) => console.log('Redis Client Error', err));
+let redisPublisher = null;
+let isConnected = false;
 
 export const connectRedis = async () => {
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) {
+    console.warn('REDIS_URL not set — Redis Publisher disabled');
+    return;
+  }
+
   try {
+    redisPublisher = createClient({ url: redisUrl });
+
+    redisPublisher.on('error', (err) => console.error('Redis Publisher Error:', err.message));
+    redisPublisher.on('connect', () => console.log('Redis Publisher connected'));
+    redisPublisher.on('reconnecting', () => console.log('Redis Publisher reconnecting...'));
+
     await redisPublisher.connect();
-    console.log('Redis Publisher connected successfully');
+    isConnected = true;
   } catch (error) {
-    console.error('Error connecting Redis Publisher', error);
+    console.error('Failed to connect Redis Publisher:', error.message);
+    isConnected = false;
+  }
+};
+
+export const publishEvent = async (channel, data) => {
+  if (!redisPublisher || !isConnected) {
+    console.warn('Redis not available — skipping publish');
+    return false;
+  }
+  try {
+    await redisPublisher.publish(channel, JSON.stringify(data));
+    console.log(`Published to ${channel}:`, data.event);
+    return true;
+  } catch (error) {
+    console.error('Failed to publish event:', error.message);
+    return false;
   }
 };

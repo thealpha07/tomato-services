@@ -1,32 +1,44 @@
 import { createClient } from 'redis';
 import cartModel from '../models/cartModel.js';
 
-export const redisSubscriber = createClient({
-  url: process.env.REDIS_URL || 'redis://redis:6379'
-});
-
-redisSubscriber.on('error', (err) => console.log('Redis Client Error', err));
+let redisSubscriber = null;
 
 export const connectRedis = async () => {
-  try {
-    await redisSubscriber.connect();
-    console.log('Redis Subscriber connected successfully');
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) {
+    console.warn('REDIS_URL not set — Redis Subscriber disabled');
+    return;
+  }
 
+  try {
+    redisSubscriber = createClient({ url: redisUrl });
+
+    redisSubscriber.on('error', (err) => console.error('Redis Subscriber Error:', err.message));
+    redisSubscriber.on('connect', () => console.log('Redis Subscriber connected'));
+    redisSubscriber.on('reconnecting', () => console.log('Redis Subscriber reconnecting...'));
+
+    await redisSubscriber.connect();
+
+    // Listen for order events from order-service
     await redisSubscriber.subscribe('order-events', async (message) => {
       try {
         const eventData = JSON.parse(message);
         console.log(`Received event: ${eventData.event} for user: ${eventData.userId}`);
 
         if (eventData.event === 'OrderPaid') {
-          // Clear the cart for the user
-          await cartModel.findOneAndUpdate({ userId: eventData.userId }, { cartData: {} });
-          console.log(`Cart cleared successfully for user: ${eventData.userId}`);
+          await cartModel.findOneAndUpdate(
+            { userId: eventData.userId },
+            { cartData: {} }
+          );
+          console.log(`Cart cleared for user: ${eventData.userId}`);
         }
       } catch (err) {
         console.error('Error processing Redis message:', err);
       }
     });
+
+    console.log('Redis Subscriber listening on "order-events" channel');
   } catch (error) {
-    console.error('Error connecting Redis Subscriber', error);
+    console.error('Failed to connect Redis Subscriber:', error.message);
   }
 };

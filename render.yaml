@@ -38,6 +38,8 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: REDIS_URL
+        sync: false
 
   - type: web
     name: order-service
@@ -50,6 +52,8 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: REDIS_URL
         sync: false
 
   # ----------------------------------------

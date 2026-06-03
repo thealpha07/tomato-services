@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
+import { connectRedis } from "./config/redis.js";
 import cartRouter from "./routes/cartRoute.js";
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 connectDB();
+connectRedis();
 
 // Gateway strips "/api/cart", so we catch the raw routes at the root
 app.use("/", cartRouter);

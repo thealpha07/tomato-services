@@ -1,7 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import Stripe from "stripe";
 import axios from "axios";
-import { redisPublisher } from "../config/redis.js";
+import { publishEvent } from "../config/redis.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -60,7 +60,12 @@ const verifyOrder = async (req, res) => {
     if (success == "true") {
       const order = await orderModel.findByIdAndUpdate(orderId, { payment: true }, { new: true });
       
-      // Redis removed - Frontend will handle cart clearing via API Gateway
+      // Publish OrderPaid event so cart-service clears the cart
+      await publishEvent('order-events', {
+        event: 'OrderPaid',
+        userId: order.userId,
+        orderId: order._id
+      });
       
       res.json({ success: true, message: "Paid" });
     } else {
