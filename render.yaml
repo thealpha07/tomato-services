@@ -55,6 +55,11 @@ services:
         sync: false
       - key: REDIS_URL
         sync: false
+      - key: CART_SERVICE_URL
+        fromService:
+          type: web
+          name: cart-service
+          envVarKey: RENDER_EXTERNAL_URL
 
   # ----------------------------------------
   # 2. API Gateway

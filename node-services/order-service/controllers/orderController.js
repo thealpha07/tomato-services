@@ -60,7 +60,21 @@ const verifyOrder = async (req, res) => {
     if (success == "true") {
       const order = await orderModel.findByIdAndUpdate(orderId, { payment: true }, { new: true });
       
-      // Publish OrderPaid event so cart-service clears the cart
+      // PRIMARY: Direct HTTP call to cart-service to clear cart (synchronous, guaranteed)
+      const cartServiceUrl = process.env.CART_SERVICE_URL;
+      if (cartServiceUrl) {
+        try {
+          await axios.post(`${cartServiceUrl}/internal/clear`, 
+            { userId: order.userId },
+            { headers: { "x-service-secret": process.env.JWT_SECRET } }
+          );
+          console.log(`Cart cleared via HTTP for user ${order.userId}`);
+        } catch (httpError) {
+          console.error('Failed to clear cart via HTTP:', httpError.message);
+        }
+      }
+
+      // BACKUP: Publish OrderPaid event via Redis (async, for other listeners)
       await publishEvent('order-events', {
         event: 'OrderPaid',
         userId: order.userId,
